@@ -1,0 +1,35 @@
+version: "3"
+services:
+  app:
+    container_name: main-container
+    image: node:18
+    ports:
+      - 8000:3000
+    volumes:
+      - ./app:/app
+    working_dir: /app
+    stdin_open: true
+    tty: true
+    environment:
+      TZ: Asia/Tokyo
+    depends_on:
+      - db
+    networks:
+      - localnet
+
+  db:
+    container_name: mysql-server
+    image: mysql:latest
+    platform: linux/amd64
+    environment:
+      MYSQL_DATABASE: test
+      MYSQL_USER: testuser
+      MYSQL_PASSWORD: testuser
+      MYSQL_ROOT_PASSWORD: password
+    ports:
+      - 127.0.0.1:3306:3306
+    networks:
+      - localnet
+
+networks:
+  localnet:
